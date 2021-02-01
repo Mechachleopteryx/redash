@@ -64,12 +64,11 @@ export default function DesktopNavbar() {
   const canCreateDashboard = currentUser.hasPermission("create_dashboard");
   const canCreateAlert = currentUser.hasPermission("list_alerts");
 
-  // TODO [A11Y]: allow navigation via arrow keys and bind click events to enter key (or use b)
   return (
     <div className="desktop-navbar" role="navigation">
       <NavbarSection className="desktop-navbar-logo">
         <div>
-          <Link href="./">
+          <Link href="./" role="menuitem" tabIndex={0}>
             <img src={logoUrl} alt="Redash" />
           </Link>
         </div>
@@ -77,36 +76,24 @@ export default function DesktopNavbar() {
 
       <NavbarSection>
         {currentUser.hasPermission("list_dashboards") && (
-          <Menu.Item
-            role="menuitem"
-            tabIndex={0}
-            key="dashboards"
-            className={activeState.dashboards ? "navbar-active-item" : null}>
-            <Link href="dashboards" tabIndex={-1}>
+          <Menu.Item tabIndex={-1} key="dashboards" className={activeState.dashboards ? "navbar-active-item" : null}>
+            <Link href="dashboards" role="menuitem" tabIndex={0}>
               <DesktopOutlinedIcon alt="Dashboard navigation button" />
               <span className="desktop-navbar-label">Dashboards</span>
             </Link>
           </Menu.Item>
         )}
         {currentUser.hasPermission("view_query") && (
-          <Menu.Item
-            role="menuitem"
-            tabIndex={0}
-            key="queries"
-            className={activeState.queries ? "navbar-active-item" : null}>
-            <Link href="queries" tabIndex={-1}>
+          <Menu.Item key="queries" className={activeState.queries ? "navbar-active-item" : null}>
+            <Link href="queries" role="menuitem" tabIndex={0}>
               <CodeOutlinedIcon alt="Queries navigation button" />
               <span className="desktop-navbar-label">Queries</span>
             </Link>
           </Menu.Item>
         )}
         {currentUser.hasPermission("list_alerts") && (
-          <Menu.Item
-            role="menuitem"
-            tabIndex={0}
-            key="alerts"
-            className={activeState.alerts ? "navbar-active-item" : null}>
-            <Link href="alerts" tabIndex={-1}>
+          <Menu.Item key="alerts" className={activeState.alerts ? "navbar-active-item" : null}>
+            <Link href="alerts" role="menuitem" tabIndex={0}>
               <AlertOutlinedIcon alt="Alerts navigation button" />
               <span className="desktop-navbar-label">Alerts</span>
             </Link>
@@ -117,11 +104,11 @@ export default function DesktopNavbar() {
       <NavbarSection className="desktop-navbar-spacer">
         {(canCreateQuery || canCreateDashboard || canCreateAlert) && (
           <Menu.SubMenu
-            role="menuitem"
-            tabIndex={0}
             key="create"
             popupClassName="desktop-navbar-submenu"
             data-test="CreateButton"
+            role="menuitem"
+            tabIndex={0}
             title={
               <React.Fragment>
                 <PlusOutlinedIcon />
@@ -129,8 +116,8 @@ export default function DesktopNavbar() {
               </React.Fragment>
             }>
             {canCreateQuery && (
-              <Menu.Item key="new-query" role="menuitem" tabIndex={0}>
-                <Link href="queries/new" data-test="CreateQueryMenuItem">
+              <Menu.Item key="new-query">
+                <Link href="queries/new" role="menuitem" tabIndex={0} data-test="CreateQueryMenuItem">
                   New Query
                 </Link>
               </Menu.Item>
@@ -147,8 +134,8 @@ export default function DesktopNavbar() {
               </Menu.Item>
             )}
             {canCreateAlert && (
-              <Menu.Item key="new-alert" role="menuitem" tabIndex={0}>
-                <Link data-test="CreateAlertMenuItem" href="alerts/new">
+              <Menu.Item key="new-alert">
+                <Link data-test="CreateAlertMenuItem" href="alerts/new" role="menuitem" tabIndex={0}>
                   New Alert
                 </Link>
               </Menu.Item>
@@ -159,14 +146,14 @@ export default function DesktopNavbar() {
 
       <NavbarSection>
         <Menu.Item key="help">
-          <HelpTrigger showTooltip={false} type="HOME">
+          <HelpTrigger showTooltip={false} type="HOME" role="menuitem" tabIndex={0}>
             <QuestionCircleOutlinedIcon />
             <span className="desktop-navbar-label">Help</span>
           </HelpTrigger>
         </Menu.Item>
         {firstSettingsTab && (
           <Menu.Item key="settings" className={activeState.dataSources ? "navbar-active-item" : null}>
-            <Link href={firstSettingsTab.path} data-test="SettingsLink">
+            <Link href={firstSettingsTab.path} data-test="SettingsLink" role="menuitem" tabIndex={0}>
               <SettingOutlinedIcon />
               <span className="desktop-navbar-label">Settings</span>
             </Link>
@@ -178,17 +165,23 @@ export default function DesktopNavbar() {
         <Menu.SubMenu
           key="profile"
           popupClassName="desktop-navbar-submenu"
+          role="menuitem"
+          tabIndex={0}
           title={
             <span data-test="ProfileDropdown" className="desktop-navbar-profile-menu-title">
               <img className="profile__image_thumb" src={currentUser.profile_image_url} alt={currentUser.name} />
             </span>
           }>
           <Menu.Item key="profile">
-            <Link href="users/me">Profile</Link>
+            <Link href="users/me" role="menuitem" tabIndex={0}>
+              Profile
+            </Link>
           </Menu.Item>
           {currentUser.hasPermission("super_admin") && (
             <Menu.Item key="status">
-              <Link href="admin/status">System Status</Link>
+              <Link href="admin/status" role="menuitem" tabIndex={0}>
+                System Status
+              </Link>
             </Menu.Item>
           )}
           <Menu.Divider />
